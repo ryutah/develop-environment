@@ -50,6 +50,7 @@ RUN apt-get update \
       hub \
       jq \
       vim \
+      wget \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
