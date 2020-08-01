@@ -38,6 +38,8 @@ WORKDIR /usr/local/lib
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
  && tar zxvf google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz google-cloud-sdk \
  && ./google-cloud-sdk/install.sh --quiet --additional-components kind kubectl kustomize skaffold\
+ && kubectl completion bash > /etc/bash_completion.d/kubectl \
+ && kind completion bash > /etc/bash_completion.d/kind \
  && rm -f google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz
 
 # Install tools
