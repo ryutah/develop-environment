@@ -38,4 +38,13 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
  && echo "source /usr/local/lib/google-cloud-sdk/path.bash.inc" >> /root/.bashrc \
  && rm -f google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz
 
+# Install tools
+RUN apt-get update \
+ && apt-get install -y \
+      bash-completion \
+      git \
+      hub \
+      jq \
+      vim
+
 WORKDIR /root
