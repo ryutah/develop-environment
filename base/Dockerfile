@@ -25,6 +25,10 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
       docker-ce-cli=${DOCKER_VERSION} \
       containerd.io
 
+## Install Docker Compose
+RUN curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+ && chmod +x /usr/local/bin/docker-compose
+
 # Install Google Cloud SDK
 WORKDIR /usr/local/lib
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
