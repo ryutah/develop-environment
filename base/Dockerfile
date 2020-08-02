@@ -12,7 +12,7 @@ RUN apt-get update \
       ca-certificates \
       curl \
       gnupg-agent \
-      software-properties-common
+      software-properties-common \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
@@ -37,9 +37,9 @@ RUN curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOS
 WORKDIR /usr/local/lib
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
  && tar zxvf google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz google-cloud-sdk \
- && ./google-cloud-sdk/install.sh --quiet --additional-components kind kubectl kustomize skaffold\
- && kubectl completion bash > /etc/bash_completion.d/kubectl \
- && kind completion bash > /etc/bash_completion.d/kind \
+ && ./google-cloud-sdk/install.sh --quiet --additional-components kind kubectl kustomize skaffold \
+ && ./google-cloud-sdk/bin/kubectl completion bash > /etc/bash_completion.d/kubectl \
+ && ./google-cloud-sdk/bin/kind completion bash > /etc/bash_completion.d/kind \
  && rm -f google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz
 
 # Install tools
@@ -54,6 +54,6 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-COPY .bashrc /root/.bashrc
+COPY base/.bashrc /root/.bashrc
 
 WORKDIR /root
