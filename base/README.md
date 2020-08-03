@@ -3,15 +3,25 @@
 ## Quick Start
 
 ```console
+bash <(curl -sL https://raw.githubusercontent.com/ryutah/develop-environment/master/initialize.sh)
+Input Your Git name:
+[YOUR_NAME]
+Input Your Git email:
+[YOUR_EMAIL]
+
 docker container run -it --rm \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v $(pwd)/.config/gcloud:/root/.config/gcloud \
+  -v $(pwd)/.config:/root/.config \
   ryutah/develop-environment bash
 ```
 
-## Git設定
+## Tips
 
-コンテナを実行するカレントディレクトリに、次のようにファイルを作成する
+### Git設定
+
+#### Credential Helperを利用するy
+
+コンテナを実行するカレントディレクトリに `.git.store` を作成する
 
 ```txt
 .config
@@ -20,9 +30,18 @@ docker container run -it --rm \
     └── .gitconfig
 ```
 
-各ファイルを次のように設定する
+##### .git.store
 
-### .gitconfig
+クレデンシャルを保持するファイル。
+**パーソナルアクセストークンを記載する必要があるが、特に暗号化などされてないので管理には要注意**
+
+```txt
+https://[GITHUB_USER_NAME]:[PERSONAL_ACCESS_TOKEN]@github.com
+```
+
+##### .gitconfig
+
+credential helperを設定し、GitHubのアクセスをsshではなくhttpsで行うように変更する
 
 ```gitconfig
 [user]
@@ -30,25 +49,6 @@ docker container run -it --rm \
   name = [YOUR_NAME]
 [credential]
   helper = store --file /root/.config/git/.git.store
-[credential "https://source.developers.google.com"]
-  helper = gcloud.sh
 [url "https://github.com/"]
   insteadOf = git@github.com:
-```
-
-### .git.store
-
-```txt
-https://[GITHUB_USER_NAME]:[PERSONAL_ACCESS_TOKEN]@github.com
-```
-
-### 設定をマウントしてコンテナを実行する
-
-```console
-docker container run -it --rm \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v $(pwd)/.config/gcloud:/root/.config/gcloud \
-  -v $(pwd)/.config/git/.git.store:/root/.config/.git.store \
-  -v $(pwd)/.config/git/.gitconfig:/root/.gitconfig \
-  ryutah/develop-environment bash
 ```
