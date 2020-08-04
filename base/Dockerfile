@@ -10,13 +10,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update \
  && apt-get install -y \
       apt-transport-https \
+      bash-completion \
       ca-certificates \
       curl \
       gnupg-agent \
       software-properties-common \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
+ && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
  && apt-key fingerprint 0EBFCD88 \
  && add-apt-repository \
       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -24,7 +23,6 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
       stable" \
  && apt-get update \
  && apt-get install -y \
-      docker-ce=${DOCKER_VERSION} \
       docker-ce-cli=${DOCKER_VERSION} \
       containerd.io \
  && apt-get clean \
@@ -39,6 +37,7 @@ WORKDIR /usr/local/lib
 RUN curl -s -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
  && tar xzf google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz google-cloud-sdk \
  && ./google-cloud-sdk/install.sh --quiet --additional-components kind kubectl kustomize skaffold \
+ && mkdir -p /etc/bash_completion.d \
  && ./google-cloud-sdk/bin/kubectl completion bash > /etc/bash_completion.d/kubectl \
  && ./google-cloud-sdk/bin/kind completion bash > /etc/bash_completion.d/kind \
  && rm -f google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz
@@ -46,7 +45,6 @@ RUN curl -s -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google
 # Install tools(with apt-get)
 RUN apt-get update \
  && apt-get install -y \
-      bash-completion \
       git \
       hub \
       jq \

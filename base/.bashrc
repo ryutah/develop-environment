@@ -102,6 +102,8 @@ source /usr/local/lib/google-cloud-sdk/completion.bash.inc
 source /usr/local/lib/google-cloud-sdk/path.bash.inc
 
 alias rm='rm -i'
+alias ..="cd .."
+alias c="clear"
 
 source ~/.git-prompt.sh
 
@@ -117,6 +119,9 @@ __git_prompt() {
 }
 
 __gcloud_prompt() {
+  if [[ ! -f ~/.config/gcloud/active_config ]]; then
+    return 0
+  fi
   local project_id=$(cat ~/.config/gcloud/configurations/config_$(cat ~/.config/gcloud/active_config) | grep 'project' | sed -r 's/.*project\s?=\s?(.+)/\1/g')
   if [[ ! -z "${project_id}" ]]; then
     echo -e "\e[0;33m${project_id}\e[0m"
